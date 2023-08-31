@@ -29,7 +29,10 @@ let schema = yup.object().shape({
     countInStock: yup.number().required("Quantity is Required"),
 });
 
-const Addproduct = () => {
+const Addproduct= ({ isShowAddProduct2}) => {
+    const getAddProductStyle = () => {
+        return isShowAddProduct2 ? { right: '0px' } : {};
+    };
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [color, setColor] = useState([]);
@@ -147,7 +150,7 @@ const Addproduct = () => {
         console.log(color);
     };
     return (
-        <div>
+        <div id='productContainer2' style={getAddProductStyle()}>
             <h3 className="mb-4 title">Add Product</h3>
             <div>
                 <form
