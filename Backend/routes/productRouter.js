@@ -163,4 +163,56 @@ productRouter.get('/getProductsByUser/:idUser', async (req, res) => {
         res.json({ status: "error", message: err.message });
     }
 });
+productRouter.get('/getProductById/:idProduct',async(req,res)=>{
+    const idP=req.params.idProduct;
+    try{
+        const product=await Product.findById(idP);
+        if(product){
+            res.status(201).json(product);
+        }
+        else{
+            res.status(404).json({message: 'Product not found'})
+        }
+    }catch (e) {
+        res.status(500).json({message:e.message , error: e.stack})
+    }
+})
+// Rating
+// ajout avis et ratings
+productRouter.post('/addRatings/:idUser/:idProduct/Review',async(req,res)=>{
+    const idUser=req.params.idUser;
+    const idProduct=req.params.idProduct;
+    try {
+        const {comment,rating}=req.body;
+        const user=await User.findById(idUser);
+        const product=await Product.findById(idProduct);
+        if(product){
+            const alreadyReviewed=product.reviews.find ( (r)=>r.user && r.user.toString()=== idUser.toString() )
+            if(alreadyReviewed){
+                res.status(400);
+                throw new Error('Product already reviewed')
+            }
+            const review={
+                name:user.name,
+                rating:Number(rating),
+                comment,
+                user:user._id
+            }
+            product.reviews.push(review)
+            // houni chnaamel opertion chnekhou les reviews mte3 kol produit w na9smou aal total mte3 les avis lkol ,
+            // reduce nesta3melha lel accumulation
+            product.numReviews=product.reviews.length;
+            product.rating=product.reviews.reduce( (acc,item)=>item.rating+acc,0 )/product.reviews.length;
+        await product.save();
+        res.status(201).json({product:product,review:review});
+        }
+        else{
+            res.status(400);
+            throw new Error('Products does not exist')
+        }
+    }catch (e) {
+        res.status(500).json({ message: e.message, stack: e.stack });
+    }
+})
+
 module.exports= productRouter;
