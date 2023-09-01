@@ -126,8 +126,9 @@ console.log(connectedUser)
                     </div>
                     <button
                         className="border-0 px-3 py-2 text-white fw-bold w-100 text-center text-decoration-none fs-5"
-                        style={{ background: "#ffd333" }}
+                        // style={{ background: "#ffd333" }}
                         type="submit"
+                        id="signIn"
                     >
                         Login
                     </button>

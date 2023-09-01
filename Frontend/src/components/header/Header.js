@@ -1,80 +1,153 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import SearchForm from '../form/searchform/searchformview';
 import './headerstyle.css';
-import AddProduct from "../product/addProduct";
-import Addproduct from "../../pages/Addproduct";
+import AddProduct from '../product/addProduct';
+import {IoIosNotifications} from "react-icons/io";
+import {Button} from "reactstrap";
+import { BrowserRouter as Router } from 'react-router-dom';
 
-export default class Header extends Component {
+const Header = (props) => {
+    const [connectedUser, setConnectedUser] = useState(null);
+    const emailUserConnected = localStorage.getItem('emailUserConnected')
+    const nameUserConnected = localStorage.getItem('nameUserConnected')
+    useEffect(() => {
+        const token = localStorage.getItem('jwtToken');
+        localStorage.setItem('jwtToken', token);
+        if (!token) {
+            alert('You must be connected to create a product or comment....');
+            return;
+        }
 
-    render() {
-
-        return (
-            <div id='headerContainer'>
-                <div id='logoContainer'>
-                    <div id='burgerIconContainer' onClick={this.props.toggleSidebar}>
-                        <div className='burgerSlice'></div>
-                        <div className='burgerSlice'></div>
-                        <div className='burgerSlice'></div>
-                    </div>
-                    <div id='logo'><Link to='/'>Koujina Store</Link></div>
-                </div>
-                <div id='headerSearchFormContainer'>
-                    <SearchForm
-                        productSearchHandler={this.props.productSearchHandler}
-                    />
-                </div>
-                <div style={{marginLeft:"-50px"}} id='headerCartIcon'>
-                    <div id='cartIconContainer'>
-                        <i
-                            onClick={this.props.toggleShoppingCart}
-                            id='cartIcon'
-                            className='fa fa-shopping-basket'
-                        ></i>
-                        <span id='cartCounter'>{this.props.totalCartItem}</span>
-                    </div>
-                </div>
-
-                {/*<div style={{marginLeft:"-50px", marginRight:"20px"}} id='headerProductIcon'>*/}
-                {/*    <div id='cartIconContainer'>*/}
-                {/*        <i*/}
-                {/*            onClick={this.props.toggleAddProduct}*/}
-                {/*            id='cartIcon'*/}
-                {/*            className='fa fa-plus'*/}
-                {/*        ></i>*/}
-                {/*        <span id='cartCounter'>{this.props.totalCartItem}</span>*/}
-                {/*    </div>*/}
-
-                {/*</div>*/}
-
-                <div style={{marginLeft:"-50px", marginRight:"20px"}}  id='headerProductIcon'>
-                    <div id='cartIconContainer'>
-                        <i
-                            onClick={this.props.toggleAddProduct2}
-                            id='cartIcon'
-                            className='fa fa-plus'
-                        ></i>
-                        <span id='cartCounter'>{this.props.totalCartItem}</span>
-                    </div>
-                </div>
-
-
-
-                <div  id='headerProductIcon'>
-                    <div id='cartIconContainer'>
-                        <i
-                            onClick={this.props.toggleDisplayDetailsProduct}
-                            id='cartIcon'
-                            className='fa fa-plus'
-                        ></i>
-                        <span id='cartCounter'>{this.props.totalCartItem}</span>
-                    </div>
-                </div>
-
-
-
-                <div id='signIn'>SIGN IN</div>
-            </div>
-        );
-    }
+        setConnectedUser(localStorage.getItem('connectedUser'));
+    }, []);
+const handleLougout=()=>{
+    // localStorage.removeItem('nameUserConnected')
+    // localStorage.removeItem('jwtToken')
+    // localStorage.removeItem('emailUserConnected')
+    localStorage.clear()
+   window.location.href='/'
 }
+    const handleSignIn=()=>{
+        // localStorage.clear()
+        window.location.href='SignIn'
+    }
+    return (
+        <div  id="headerContainer">
+            <div id="logoContainer">
+                <div id="burgerIconContainer" onClick={props.toggleSidebar}>
+                    <div className="burgerSlice"></div>
+                    <div className="burgerSlice"></div>
+                    <div className="burgerSlice"></div>
+                </div>
+                <div id="logo">
+                    <Link to="/">Koujina Store</Link>
+                </div>
+            </div>
+            <div id="headerSearchFormContainer">
+                <SearchForm productSearchHandler={props.productSearchHandler} />
+            </div>
+            <div  id="headerCartIcon">
+                <div id="cartIconContainer">
+                    <i
+                        onClick={props.toggleShoppingCart}
+                        id="cartIcon"
+                        className="fa fa-shopping-basket"
+                    ></i>
+                    <span id="cartCounter">{props.totalCartItem}</span>
+                </div>
+            </div>
+
+            <div  id="headerCartIcon">
+                <div id="cartIconContainer">
+                    <i
+                        onClick={props.toggleAddProduct2}
+                        id="cartIcon"
+                        className="fa fa-plus"
+                    ></i>
+                    <span id="cartCounter">{props.totalCartItem}</span>
+                </div>
+            </div>
+
+            {/*<div id="headerProductIcon">*/}
+            {/*    <div id="cartIconContainer">*/}
+            {/*        <i*/}
+            {/*            onClick={props.toggleDisplayDetailsProduct}*/}
+            {/*            id="cartIcon"*/}
+            {/*            className="fa fa-plus"*/}
+            {/*        ></i>*/}
+            {/*        <span id="cartCounter">{props.totalCartItem}</span>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
+
+            {connectedUser ?(
+
+                <>
+
+                    <div  id="headerCartIcon">
+                        <div id="cartIconContainer">
+                            <i
+                                onClick={props.toggleAddProduct2}
+                                id="cartIcon"
+                                className="fa fa-bell"
+                            ></i>
+                            <span id="cartCounter">3</span>
+                        </div>
+                    </div>
+
+                        <div className="d-flex gap-3 align-items-center dropdown">
+                            <div>
+                                <img
+                                    width={32}
+                                    height={32}
+                                    src="https://stroyka-admin.html.themeforest.scompiler.ru/variants/ltr/images/customers/customer-4-64x64.jpg"
+                                    alt=""
+                                />
+                            </div>
+                            <div
+                                role="button"
+                                id="dropdownMenuLink"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                <h5 className="mb-0">{nameUserConnected}</h5>
+                                <p className="mb-0">{emailUserConnected}</p>
+                            </div>
+                            <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li>
+                                    <Link
+                                        className="dropdown-item py-1 mb-1"
+                                        style={{ height: "auto", lineHeight: "20px" }}
+                                        to="/"
+                                    >
+                                        View Profile
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Button
+                                        onClick={handleLougout}
+                                        className="dropdown-item py-1 mb-1"
+                                        style={{ height: "auto", lineHeight: "20px" }}
+                                        to="/"
+                                    >
+                                        Signout
+                                    </Button>
+                                </li>
+                            </div>
+                        </div>
+                </>
+                    ):(
+
+
+                <div id="signIn"  onClick={handleSignIn} >SIGN IN</div>
+
+
+            )}
+
+
+        </div>
+    );
+
+};
+
+export default Header;

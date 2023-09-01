@@ -85,6 +85,10 @@ role:role,
         // Extract the values of the selected options (an array of objects) and store them in the state
         setSelectedRole(selectedOptions.map((option) => option.value));
     };
+    const handleLougout=()=>{
+
+        window.location.href=''
+    }
     return (
         <div className="py-5" style={{ background: "light", minHeight: "100vh" }}>
 
@@ -152,13 +156,18 @@ role:role,
 
                     <div className="error mt-2">{formik.touched.password && formik.errors.password}</div>
                     <div className="mb-3 text-end">
-                        <Link to="forgot-password" className="">
+                        <Link to="/forgot-password" className="">
                             Forgot Password?
                         </Link>
 
-                        <Link style={{float:"left "}} to="SignIn" className="">
-                            Sign In
+                        <Link style={{ float: "left" }} to="/" className="">
+                            Login
                         </Link>
+
+
+                        {/*<div  style={{float:"left "}}   >SIGN IN</div>*/}
+
+
                     </div>
                     <button
                         className="border-0 px-3 py-2 text-white fw-bold w-100 text-center text-decoration-none fs-5"

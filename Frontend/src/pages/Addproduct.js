@@ -46,7 +46,23 @@ const Addproduct= ({ isShowAddProduct2}) => {
 
 
 
+    const [connectedUser,setConnectedUser] = useState(null);
+    useEffect(async  ()=> {
 
+
+
+        const token = localStorage.getItem('jwtToken');
+        localStorage.setItem('jwtToken', token);
+        if (!token) {
+            alert("You must be connected to create product or comment ....");
+            return;
+        }
+
+        setConnectedUser(localStorage.getItem('connectedUser'));
+        // Extract the user ID from the payload
+
+
+    },[] )
     const brandState = useSelector((state) => state.brand.brands);
     const catState = useSelector((state) => state.pCategory.pCategories);
     const colorState = useSelector((state) => state.color.colors);
@@ -121,8 +137,9 @@ const Addproduct= ({ isShowAddProduct2}) => {
 
 
                 // Envoyez les données à la route backend
+                if(connectedUser){
                 const response = await fetch(
-                    `http://localhost:5000/product/addProduct/64e48cee63ece1d253219946`,
+                    `http://localhost:5000/product/addProduct/${connectedUser}`,
                     {
                         method: "POST",
                         body: formData, // Utilisation du FormData comme corps de la requête
@@ -136,6 +153,10 @@ const Addproduct= ({ isShowAddProduct2}) => {
                 } else {
                     // Gérez les erreurs ici
                     toast.error("Failed to add product");
+                }
+                }
+                else{
+                    toast.error("You must be connected ! Please")
                 }
             } catch (error) {
                 console.error("Error adding product:", error);

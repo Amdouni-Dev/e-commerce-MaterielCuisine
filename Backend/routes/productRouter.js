@@ -214,5 +214,13 @@ productRouter.post('/addRatings/:idUser/:idProduct/Review',async(req,res)=>{
         res.status(500).json({ message: e.message, stack: e.stack });
     }
 })
-
+// productRouter.get('/getReviewsById/:idProduct',async(req,res)=>{
+//     const id=req.params.id;
+//     try{
+//         const product=Product.findById(id)
+//         const reviews=product.
+//     }catch (e) {
+//
+//     }
+// })
 module.exports= productRouter;
