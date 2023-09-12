@@ -32,23 +32,26 @@ const [isSuccess,setIsSuccess]=useState(false);
         price: 0,
         image: null
     });
-
-    useEffect(async  ()=> {
-
+const FToken=    async  ()=> {
 
 
-        const token = localStorage.getItem('jwtToken');
-        localStorage.setItem('jwtToken', token);
-        if (!token) {
-            alert("Vous devez être connecté pour créer un produit.");
-            return;
-        }
 
-        setConnectedUser(localStorage.getItem('connectedUser'));
-        // Extract the user ID from the payload
+    const token = localStorage.getItem('jwtToken');
+    localStorage.setItem('jwtToken', token);
+    if (!token) {
+        alert("Vous devez être connecté pour créer un produit.");
+        return;
+    }
+
+    setConnectedUser(localStorage.getItem('connectedUser'));
+    // Extract the user ID from the payload
 
 
-    },[] )
+}
+    useEffect(  ()=>{
+        FToken()
+
+    } ,[] )
 
 
     const handleSubmit2 = async (e) => {

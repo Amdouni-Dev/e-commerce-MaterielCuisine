@@ -55,6 +55,11 @@ console.log(product.name)
 					>
 						Add To Cart
 					</button>
+
+
+
+					{/*<button onClick={() => this.props.addToCartHandler(this.props.product)}>Add to Cart Vrai </button>*/}
+
 					{/*<button*/}
 
 					{/*onClick={this.handleClick}*/}

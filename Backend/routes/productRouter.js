@@ -62,7 +62,15 @@ const fs = require('fs'); // Require the 'fs' module for file handling
 productRouter.get('/imageProductByID/:id', async (req, res) => {
     try {
         const id = req.params.id;
+        console.log("************************")
+        console.log(id)
+        console.log("************************")
+
+        if (!id) {
+            return res.status(404).json({ code: 404, message: 'Id non trouvé' });
+        }
         const product = await Product.findById(id);
+
 
         if (!product) {
             return res.status(404).json({ code: 404, message: 'Produit non trouvé' });
@@ -223,4 +231,29 @@ productRouter.post('/addRatings/:idUser/:idProduct/Review',async(req,res)=>{
 //
 //     }
 // })
+
+
+
+//Products by Category
+
+
+productRouter.get('/getProductsBycategory/:categoryID',async(req,res)=>{
+    const categoryID = req.params.categoryID;
+    try{
+
+        const category=Category.findById(categoryID);
+        if(category){
+         const products = await Product.find( {category:categoryID} )
+        res.status(201).json(products)}
+        else{
+            res.status(404).json({message:"Category not found"})
+        }
+    }catch (e) {
+res.status(500).json({message:"Error: " + e.message})
+    }
+
+
+
+})
+
 module.exports= productRouter;

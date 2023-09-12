@@ -12,6 +12,7 @@ const port = 5000;
 const userRouter = require('./routes/usersRouter');
 const productRouter = require('./routes/productRouter')
 const categoryRouter = require('./routes/categoryRouter')
+const orderRouter =require('./routes/orderRoutes')
 require("dotenv").config();
 const mongoose = require("mongoose");
 const db = require("./db.json");
@@ -26,7 +27,7 @@ app.get('/user', userRouter)
 
 app.use('/product', productRouter)
 app.use('/category', categoryRouter)
-
+app.use('/order',orderRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');

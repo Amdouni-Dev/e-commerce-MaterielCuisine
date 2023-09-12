@@ -6,8 +6,42 @@ import AddProduct from '../product/addProduct';
 import {IoIosNotifications} from "react-icons/io";
 import {Button} from "reactstrap";
 import { BrowserRouter as Router } from 'react-router-dom';
+import {useSelector} from "react-redux";
 
 const Header = (props) => {
+
+
+
+    const stateQt=useSelector( (state)=> state.cart.cartTotalQuantity)
+
+
+    const [qt,setQt] = useState(0)
+    // const [loc,setLoc]=useState([])
+    useEffect (  ()=>{
+
+        setQt(stateQt)
+        console.log("QQQQQQQQQQQQTTTTTTTTTTTTTTT")
+        console.log(qt)
+        // localStorage.setItem("newCart", JSON.stringify(...cart3));
+    } ,[stateQt])
+
+
+    // const state=useSelector( (state)=>state )
+  //
+  //   // console.log('Test Local staorage')
+  //   const updatedCart = state.cart.cartItems;
+  //   localStorage.setItem('cart', JSON.stringify(updatedCart));
+  //   // Lors de la mise à jour de cartTotalQuantity
+  //   const updatedTotalQuantity = state.cart.cartTotalQuantity;
+  //    localStorage.setItem('cartTotalQuantity', updatedTotalQuantity);
+  // const totalProductsCart=localStorage.getItem('cartTotalQuantity')
+    // console.log(updatedCart)
+    //
+    // console.log(updatedTotalQuantity)
+
+
+    const cartTotalQuantity=useSelector( (state)=> state.cart.cartTotalQuantity)
+    const totalProductsCart = localStorage.getItem('qty')
     const [connectedUser, setConnectedUser] = useState(null);
     const emailUserConnected = localStorage.getItem('emailUserConnected')
     const nameUserConnected = localStorage.getItem('nameUserConnected')
@@ -54,7 +88,7 @@ const handleLougout=()=>{
                         id="cartIcon"
                         className="fa fa-shopping-basket"
                     ></i>
-                    <span id="cartCounter">{props.totalCartItem}</span>
+                    <span id="cartCounter">{qt}</span>
                 </div>
             </div>
 
@@ -68,6 +102,19 @@ const handleLougout=()=>{
                     <span id="cartCounter">{props.totalCartItem}</span>
                 </div>
             </div>
+
+
+            <div  id="headerCartIcon">
+                <div id="cartIconContainer">
+                    <i
+                        onClick={props.toggleShowCategoryDetails}
+                        id="cartIcon"
+                        className="fa fa-plus"
+                    ></i>
+                    <span id="cartCounter">15</span>
+                </div>
+            </div>
+
 
             {/*<div id="headerProductIcon">*/}
             {/*    <div id="cartIconContainer">*/}

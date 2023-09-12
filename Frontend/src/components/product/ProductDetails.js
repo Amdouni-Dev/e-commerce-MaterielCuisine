@@ -36,7 +36,9 @@ const ProductDetails = ({    isShowDetailsProduct,selectedProduct }) => {
     const [connectedUser,setConnectedUser] = useState(null);
     const [rating,setRating] =useState(0);
     const [comment,setComment] =useState("");
-    useEffect(async  ()=> {
+
+
+    const fToken=  async  ()=> {
 
 
 
@@ -51,6 +53,11 @@ const ProductDetails = ({    isShowDetailsProduct,selectedProduct }) => {
         // Extract the user ID from the payload
 
 
+    }
+
+    useEffect(  ()=>{
+
+        fToken()
     },[] )
 //     useEffect( async () => {
 //
@@ -173,7 +180,11 @@ const ProductDetails = ({    isShowDetailsProduct,selectedProduct }) => {
                             </div>
 
                             <div className="img-container">
-                                <img 	 src={`http://localhost:5000/product/imageProductByID/${newProduct._id}`} alt="watch"/>
+                                {selectedProduct && selectedProduct._id ? (
+                                    <img src={`http://localhost:5000/product/imageProductByID/${selectedProduct._id}`} alt="watch" />
+                                ) : (
+                                    <p>No product image available</p>
+                                )}
                             </div>
                             <div className="hover-container">
                                 <div> <img src="../../public/logo192.png" alt="watch"/></div>

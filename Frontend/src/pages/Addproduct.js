@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { getBrands } from "../features/brand/brandSlice";
+// import { getBrands } from "../features/brand/brandSlice";
 import { getCategories } from "../features/pcategory/pcategorySlice";
 import { getColors } from "../features/color/colorSlice";
 import { Select } from "antd";
@@ -47,7 +47,9 @@ const Addproduct= ({ isShowAddProduct2}) => {
 
 
     const [connectedUser,setConnectedUser] = useState(null);
-    useEffect(async  ()=> {
+
+    // hgedhy badaltha khater loichkelt destroy
+    const FToken= async  ()=> {
 
 
 
@@ -62,19 +64,21 @@ const Addproduct= ({ isShowAddProduct2}) => {
         // Extract the user ID from the payload
 
 
-    },[] )
-    const brandState = useSelector((state) => state.brand.brands);
-    const catState = useSelector((state) => state.pCategory.pCategories);
-    const colorState = useSelector((state) => state.color.colors);
-    const imgState = useSelector((state) => state.upload.images);
+    }
+
+    useEffect(  ()=>{FToken()},[] )
+    // const brandState = useSelector((state) => state.brand.brands);
+    // const catState = useSelector((state) => state.pCategory.pCategories);
+    // const colorState = useSelector((state) => state.color.colors);
+    // const imgState = useSelector((state) => state.upload.images);
     const newProduct = useSelector((state) => state.product);
     const [cats,setCats]=useState([])
-    const { isSuccess, isError, isLoading, createdProduct } = newProduct;
+    // const { isSuccess, isError, isLoading, createdProduct } = newProduct;
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get("http://localhost:5000/category/allCategories");
-                console.log(response.data);
+            //    console.log(response.data);
                 setCats(response.data);
             } catch (err) {
                 console.log(err);
@@ -90,13 +94,13 @@ const Addproduct= ({ isShowAddProduct2}) => {
     //         toast.error("Something Went Wrong!");
     //     }
     // }, [isSuccess, isError, isLoading]);
-    const coloropt = [];
-    colorState.forEach((i) => {
-        coloropt.push({
-            label: i.title,
-            value: i._id,
-        });
-    });
+    // const coloropt = [];
+    // colorState.forEach((i) => {
+    //     coloropt.push({
+    //         label: i.title,
+    //         value: i._id,
+    //     });
+    // });
     // const img = [];
     // imgState.forEach((i) => {
     //   img.push({

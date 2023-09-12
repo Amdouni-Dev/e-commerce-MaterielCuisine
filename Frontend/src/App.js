@@ -28,29 +28,86 @@ import {FormProvider} from "./components/FormContext";
 import SignIn from "./pages/SignIn";
 import Header from "./components/header/Header";
 import HomeScreen from "./components/screens/home/homescreen";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import {addToCart} from "./components/order/redux/cartSlice";
+import CategoryDetail from "./components/category/CategoryDetail";
 
 function App() {
 
+  const dispatch = useDispatch();
 
+  // useEffect(() => {
+  //   // Récupérer les données du panier depuis le localStorage
+  //   const savedCart = JSON.parse(localStorage.getItem('cart'));
+  //   const savedCartAmount = localStorage.getItem('cartAmount');
+  //   const savedQty = localStorage.getItem('qty');
+  //
+  //   // Initialiser le panier dans le Redux Store
+  //   if (savedCart) {
+  //     dispatch(addToCart(savedCart));
+  //   }
+  //
+  //   // Initialiser d'autres données de panier si nécessaire
+  //   // dispatch(initializeCartAmount(savedCartAmount));
+  //   // dispatch(initializeCartTotalQuantity(savedQty));
+  // }, [dispatch]);
+//   useEffect( ()=> {
+//
+//
+//
+// const cartee=localStorage.getItem('carta')
+//     localStorage.setItem('carta2', cartee)
+//     console.log("carte")
+//     console.log(localStorage.getItem('carta2'))
+//     console.log("carte")
+//
+//
+//       localStorage.setItem('qnt', 0)
+//
+//
+//
+//     const token = localStorage.getItem('jwtToken');
+//
+//     localStorage.setItem('jwtToken', token);
+//
+//     if (!token) {
+//       alert("Vous devez être connecté pour créer un produit.");
+//       return;
+//     }
+// const emailUserConnected = localStorage.getItem('emailUserConnected')
+// localStorage.setItem('emailUserConnected', emailUserConnected)
+//
+//   } )
+const myFunction=       async () => {
+    try {
+        const cartee = localStorage.getItem('carta');
+        localStorage.setItem('carta2', cartee);
+        console.log("carte");
+        console.log(localStorage.getItem('carta2'));
+        console.log("carte");
 
-  useEffect( ()=> {
+        localStorage.setItem('qnt', 0);
 
+        const token = localStorage.getItem('jwtToken');
+        localStorage.setItem('jwtToken', token);
 
+        if (!token) {
+            alert("Vous devez être connecté pour créer un produit.");
+            return;
+        }
 
+        const emailUserConnected = localStorage.getItem('emailUserConnected');
+        localStorage.setItem('emailUserConnected', emailUserConnected);
 
-    const token = localStorage.getItem('jwtToken');
-    localStorage.setItem('jwtToken', token);
+        // Mettez ici d'autres opérations asynchrones si nécessaire
 
-    if (!token) {
-      alert("Vous devez être connecté pour créer un produit.");
-      return;
+    } catch (error) {
+        console.error("Une erreur s'est produite : ", error);
     }
-const emailUserConnected = localStorage.getItem('emailUserConnected')
-localStorage.setItem('emailUserConnected', emailUserConnected)
+}
 
-  } )
-
+    useEffect(()=>{myFunction()});
 
   return (
     <Router>
@@ -60,9 +117,17 @@ localStorage.setItem('emailUserConnected', emailUserConnected)
 
 
       <Routes>
+
         <Route path="/" element={<Login />} />
-        <Route  path="/Header" element={<HomeScreen />} ></Route>
-        <Route path="/SignIn" element={<SignIn/>}></Route>
+        {/*<Route  path="/Header" element={<HomeScreen />} ></Route>*/}
+          {/*<Route path="/Header/c/:categoryId" element={<CategoryDetail />} />*/}
+          <Route path="/Header" element={<HomeScreen />} />
+          <Route path="/Header/c/:categoryId" element={<HomeScreen />} />
+          <Route path="/Shipping" element={<HomeScreen />} />
+          <Route path="/Checkout" element={<HomeScreen />} />
+          <Route path="/PlaceOrder" element={<HomeScreen />} />
+          <Route path="/Order/:orderId" element={<HomeScreen />} />
+          <Route path="/SignIn" element={<SignIn/>}></Route>
         <Route path="/reset-password/:id/:token" element={<Resetpassword />} />
         <Route path="/forgot-password" element={<Forgotpassword />} />
         <Route path="/admin" element={<MainLayout />}>

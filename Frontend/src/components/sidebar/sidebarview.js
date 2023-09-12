@@ -1,42 +1,104 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, {Component, useEffect, useState} from 'react';
+import {Link, Route, Routes} from 'react-router-dom';
 import './sidebarstyle.css';
 import SearchForm from '../form/searchform/searchformview';
+import axios from "axios";
+import {Switch} from "antd";
+import CategoryDetail from "../category/CategoryDetail";
+import Header from "../header/Header";
+// import {  useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+ const  SideBar =(props)=> {
+	 const navigate = useNavigate();
+	// constructor(props) {
+	// 	super(props);
+	// 	this.state = {
+	// 		categories: [
+	// 			{ id: 1, name: 'Catégorie 1' },
+	// 			{ id: 2, name: 'Catégorie 2' },
+	// 			// Ajoutez d'autres catégories statiques ici
+	// 		],
+	// 	};
+	// }
+	const [categories, setCategories] = useState([]);
+	 const fetchCategories = async () => {
+		 try {
+			 const response = await axios.get('http://localhost:5000/category/allCategories');
+			 // console.log("Categories", response.data);
+			 setCategories(response.data);
+		 } catch (error) {
+			 console.error("Erreur lors de la récupération des catégories : ", error);
+		 }
+	 };
+	 useEffect(() => {
 
-export default class SideBar extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			categories: [
-				{ id: 1, name: 'Catégorie 1' },
-				{ id: 2, name: 'Catégorie 2' },
-				// Ajoutez d'autres catégories statiques ici
-			],
-		};
-	}
 
-	getSidebarStyle = () => {
-		return !this.props.isShowSidebar ? { left: '-200px' } : {};
+		 fetchCategories();
+	 }, []);
+	const getSidebarStyle = () => {
+		return !props.isShowSidebar ? { left: '-200px' } : {};
 	};
 
-	getCategoryLink = (categoryId) => `/c/${categoryId}`;
+	// const getCategoryLink = (categoryId) => {`/c/${categoryId}`
 
-	render() {
-		return (
-			<div id='sideBarContainer' style={this.getSidebarStyle()}>
-				<div id='sideBarBody'>
-					<ul>
-						<li id='sideBarSearchContainer'>
-							<SearchForm productSearchHandler={this.props.productSearchHandler} />
-						</li>
-						{this.state.categories.map((category) => (
-							<Link key={category.id} to={this.getCategoryLink(category.id)}>
-								<li>{category.name}</li>
-							</Link>
-						))}
-					</ul>
-				</div>
-			</div>
-		);
-	}
-}
+	// return (
+	// 	<>
+	// 	<h1>HHHHHH</h1>
+	// 	</>
+	// )
+	//
+	//
+	// };
+
+	 const handleCategoryClick = (categoryId) => {
+		 // Incorporer l'ID de la catégorie dans le chemin de l'URL
+		 // Cela déclenchera également le changement d'affichage du composant CategoryDetail
+		 props.toggleShowCategoryDetails();
+		navigate(`/Header/c/${categoryId}`);
+		 // Par exemple, si vous utilisez '/c/:categoryId' comme chemin, vous pouvez le faire comme suit :
+	 }
+		 return (
+		 <div id='sideBarContainer' style={getSidebarStyle()}>
+			 <div id='sideBarBody'>
+				 <ul>
+					 <li id='sideBarSearchContainer'>
+						 <SearchForm productSearchHandler={props.productSearchHandler} />
+					 </li>
+					 {/*<div  id="headerCartIcon">*/}
+						{/* <div id="cartIconContainer">*/}
+						{/*	 <i*/}
+						{/*		 onClick={props.toggleShowCategoryDetails}*/}
+						{/*		 id="cartIcon"*/}
+						{/*		 className="fa fa-plus"*/}
+						{/*	 ></i>*/}
+						{/*	 <span id="cartCounter">15</span>*/}
+						{/* </div>*/}
+					 {/*</div>*/}
+					 <Link  to={`/Header`}  >
+						 <li>All Products</li>
+					 </Link>
+					 {categories.map((category) => (
+						 <Link key={category._id} to={`/Header/c/${category._id}`}  onClick={props.toggleShowCategoryDetails}>
+							 <li>{category.name}</li>
+						 </Link>
+					 ))}
+
+					 {/*{categories.map((category) => (*/}
+						{/* <li*/}
+						{/*	 key={category._id}*/}
+						{/*	 onClick={() => handleCategoryClick(category._id)}*/}
+						{/* >*/}
+						{/*	 {category.name}*/}
+						{/* </li>*/}
+					 {/*))}*/}
+					 {/*<Link to={`/Header`}>*/}
+						{/* <li>All Products</li>*/}
+					 {/*</Link>*/}
+				 </ul>
+
+			 </div>
+		 </div>
+	 );
+ };
+
+export default SideBar;

@@ -5,7 +5,8 @@ export default class CartProduct extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			quantity: 1
+			quantity: 1,
+
 		};
 	}
 
@@ -13,15 +14,24 @@ export default class CartProduct extends Component {
 		let quantity = parseInt(event.target.value);
 		if (quantity > 0) {
 			this.setState({quantity: quantity});
-			this.props.setProductQuantityToCart(this.props.product.id, quantity);
+			this.props.setProductQuantityToCart(this.props.product._id, quantity);
 		}
 	}
 
 	render() {
+
+
 		return(
+
+
+			<>
+				<br/>
+				<br/>
 			<div id='cartProductContainer'>
+				<br/>
+
 				<div id='cartImgContainer'>
-					<img id='cartImg' src={this.props.product.image} alt='cart product'/>
+					<img id='cartImg' src={`http://localhost:5000/product/imageProductByID/${this.props.product._id}`} alt='cart product'/>
 				</div>
 				<div id='cartProductTitleAndPrice'>
 					<p id='cartProductTitle'>{this.props.product.title}</p>
@@ -31,21 +41,43 @@ export default class CartProduct extends Component {
 					<input
 						id='cartProductQuantity'
 						type='number'
-						value={this.state.quantity}
+						value={this.props.product.quantity}
 						onChange={this.quantityChangeHandler}
 					/>
 				</div>
+
+
 				<div id="removeCartProduct">
 					<span
 						id='removeCartProductIcon'
 						onClick={
-							() => this.props.productRemoveHandler(this.props.product.id)
+							() => this.props.removeProduct2(this.props.product)
 						}
 					>
 						<i className="fa fa-times"></i>
 					</span>
 				</div>
-			</div>
+				<div id="removeCartProduct">
+					<span
+						id='removeCartProductIcon'
+						onClick={
+							() => this.props.setProductQuantityToCartPlus(this.props.product)
+						}
+					>
+						<i className="fa fa-plus"></i>
+					</span>
+				</div>
+				<div id="removeCartProduct">
+					<span
+						id='removeCartProductIcon'
+						onClick={
+							() => this.props.setProductQuantityToCartMoins(this.props.product)
+						}
+					>
+						<i className="fa fa-minus"></i>
+					</span>
+				</div>
+			</div></>
 		);
 	}
 }
