@@ -1,10 +1,11 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {Alert} from "antd";
 import {CardElement, Elements, useElements, useStripe} from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import StripeCheckout from 'react-stripe-checkout';
+import {toast} from "react-toastify";
 const OrderDetails=()=>{
 
     // stripe
@@ -17,12 +18,19 @@ const OrderDetails=()=>{
 
 
     const {orderId} = useParams();
+const navigate=useNavigate()
+    const handleToken = async (token) => {
+        try {
+            // Effectuez la mise à jour de l'état de la commande pour la marquer comme payée
+            await axios.put(`http://localhost:5000/order/${orderId}/pay`);
+            console.log(token); // Vous pouvez traiter le token ici
 
-    const handleToken = async(token) => {
-
-
-        await axios.put(`http://localhost:5000/order/${orderId}/pay`)
-        console.log(token); // Vous pouvez traiter le token ici
+            // Redirigez l'utilisateur vers la même page avec les modifications nécessaires
+            navigate(`/Orders/${connectedUser}`);
+            toast.info("successfull payement")
+        } catch (error) {
+            console.error(error);
+        }
     };
 
 const [orderData,setOrderData]=useState(null)

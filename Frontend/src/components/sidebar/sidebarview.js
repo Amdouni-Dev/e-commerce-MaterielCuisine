@@ -10,6 +10,28 @@ import Header from "../header/Header";
 import { useNavigate } from 'react-router-dom';
  const  SideBar =(props)=> {
 	 const navigate = useNavigate();
+
+	 const [connectedUser,setConnectedUser] = useState(null);
+	 const FToken=    async  ()=> {
+
+
+
+		 const token = localStorage.getItem('jwtToken');
+		 localStorage.setItem('jwtToken', token);
+		 if (!token) {
+			 alert("Vous devez être connecté pour créer un produit.");
+			 return;
+		 }
+
+		 setConnectedUser(localStorage.getItem('connectedUser'));
+		 // Extract the user ID from the payload
+
+
+	 }
+	 useEffect(  ()=>{
+		 FToken()
+
+	 } ,[] )
 	// constructor(props) {
 	// 	super(props);
 	// 	this.state = {
@@ -74,6 +96,12 @@ import { useNavigate } from 'react-router-dom';
 						{/*	 <span id="cartCounter">15</span>*/}
 						{/* </div>*/}
 					 {/*</div>*/}
+
+
+					 <Link  to={`/Orders/${connectedUser}`}  >
+						 <li>My orders</li>
+					 </Link>
+
 					 <Link  to={`/Header`}  >
 						 <li>All Products</li>
 					 </Link>

@@ -127,6 +127,7 @@ const myFunction=       async () => {
           <Route path="/Checkout" element={<HomeScreen />} />
           <Route path="/PlaceOrder" element={<HomeScreen />} />
           <Route path="/Order/:orderId" element={<HomeScreen />} />
+          <Route path="/Orders/:userId" element={<HomeScreen />} />
           <Route path="/SignIn" element={<SignIn/>}></Route>
         <Route path="/reset-password/:id/:token" element={<Resetpassword />} />
         <Route path="/forgot-password" element={<Forgotpassword />} />

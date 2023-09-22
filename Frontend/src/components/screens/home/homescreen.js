@@ -18,13 +18,15 @@ import shipping from "../../order/Shipping";
 import Checkout from "../../order/Checkout";
 import CheckoutGuard from "../../order/CheckoutGuard";
 import PlaceOrder from "../../order/PlaceOrder";
-import OrderDetails from "../../order/orderDetails"; // Importez useLocation
+import OrderDetails from "../../order/orderDetails";
+import MyOrders from "../../order/MyOrders"; // Importez useLocation
 
 export default function HomeScreen() {
 	const location = useLocation(); // Utilisez useLocation pour accéder à l'URL
 	const { pathname } = location;
 	const match = pathname.match(/\/Header\/c\/(\d+)/); // Utilisez une expression régulière pour extraire l'ID de l'URL
 	const match2 = pathname.match(/\/Order\/(\d+)/);
+	const match3 = pathname.match(/\/Orders\/(\d+)/);
 	const ShowShippingComponent=pathname.includes('/Shipping')
 	const ShowCheckoutComponent=pathname.includes('/Checkout')
 	const ShowPlaceOrderComponent=pathname.includes('/PlaceOrder')
@@ -44,6 +46,7 @@ export default function HomeScreen() {
 	// match contiendra l'ID extrait s'il existe dans l'URL
 	const categoryId = match ? match[1] : null;
 	const orderId=match2 ? match2[1]:null;
+	const userId=match3 ? match3[1]:null;
 
 	// Reste de votre logique de composant
 	const [selectedProduct, setSelectedProduct] = React.useState(null);
@@ -187,6 +190,15 @@ const 	addToCartHandler = (product) => {
 
 
 					<div id="body">
+
+						{userId?(
+
+							<MyOrders/>
+
+						) :(
+							<>
+
+
 						{orderId ?(
 							<OrderDetails/>
 
@@ -256,7 +268,9 @@ const 	addToCartHandler = (product) => {
 						)}
 
 						</>)}</>)
-						}</>)}</>) }
+						}</>)}</>) }</>
+
+						) }
 					</div>
 				</div>
 				</body>

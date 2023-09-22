@@ -106,7 +106,7 @@ router.post('/api/image',upload.single('image'), (req, res) => {
 router.post("/register",upload.single('imageProfile'), async (req, res) => {
     const { name, surname,
         // dateOfBirth,
-        createdAt, email, password, role } = req.body;
+        createdAt, email, password, role,city,lat,lng } = req.body;
     // // const [day, month, year] = dateOfBirth.split("-"); // Divisez la date par les tirets
     // const formattedDateOfBirth = new Date(`${year}-${month}-${day}`);
     const encryptedPassword = await bcrypt.hash(password, 10);
@@ -117,18 +117,25 @@ router.post("/register",upload.single('imageProfile'), async (req, res) => {
             return res.json({ error: "User Exists" });
         }
 
-        await User.create({
+    const newUser=    await User.create({
             name,
             surname,
             // dateOfBirth: formattedDateOfBirth,
+            coordinate:{
+                lat:lat,
+                lng:lng
+            },
+            city,
             createdAt,
-            imageProfile:req.file.filename,
+       //     imageProfile:req.file.filename,
             role,
             email,
             password: encryptedPassword,
         });
+        console.log(newUser)
         res.json({ status: "ok" });
     } catch (error) {
+        console.log("Erreur", error.message)
         res.json({ status: "error" + error.message });
     }
 });

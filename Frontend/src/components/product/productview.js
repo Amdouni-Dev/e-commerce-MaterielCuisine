@@ -31,8 +31,10 @@ console.log(product.name)
 
 
 				<div id='productImageContainer'>
-
-
+<div>
+	{/*<p style={{fontSize:"70px"}} > {this.props.product2._id.$oid}</p>*/}
+	{/*{this.props.product2}*/}
+</div>
 					<img id='productImage'
 						 // onClick={this.handleClick}
 						 onClick={this.handleClick}
@@ -40,7 +42,8 @@ console.log(product.name)
 				</div>
 				{/*<button onClick={ ()=>{this.dispalyNameTest(this.props.product)} } >Test</button>*/}
 				<div id='productTitle'>
-					<p>{this.props.product.name}</p>
+					<p>{this.props.product.name}  </p>
+
 				</div>
 				<div id='productPrice'>
 					<p>${this.props.product.price}</p>

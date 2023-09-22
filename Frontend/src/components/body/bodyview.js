@@ -9,11 +9,46 @@ import {useDispatch, useSelector} from "react-redux";
 import {addToCart, changeQuantityPlus} from "../order/redux/cartSlice";
 import CategoryDetail from "../category/CategoryDetail";
 import {useParams} from "react-router-dom";
+import Product2 from "../product/productView2";
+
 const Body = ({isShowDetailsProduct,toggleDisplayDetailsProduct,toggleTest,isShowTest}) => {
+	const [connectedUser,setConnectedUser] = useState(null);
+	const FToken=    async  ()=> {
 
 
 
+		const token = localStorage.getItem('jwtToken');
+		localStorage.setItem('jwtToken', token);
+		if (!token) {
+			alert("Vous devez être connecté pour créer un produit.");
+			return;
+		}
 
+		setConnectedUser(localStorage.getItem('connectedUser'));
+		// Extract the user ID from the payload
+
+
+	}
+
+
+
+const [nearP,setNearP]=useState([])
+	useEffect(() => {
+		FToken()
+		let id=localStorage.getItem('connectedUser');
+		// Remplacez 'userId' par l'ID de l'utilisateur dont vous souhaitez récupérer les utilisateurs proches.
+	 // Exemple d'ID utilisateur
+		axios.get(`http://127.0.0.1:1000/users/otherUsers/${id}`)
+			.then((response) => {
+				setNearP(response.data.nearby_users);
+				console.log("neaaaaaaaaaaaaar")
+				console.log(nearP)
+			})
+			.catch((error) => {
+				console.error('Erreur lors de la récupération des données : ', error);
+			});
+
+	},[connectedUser])
 
 	const { products } = useProductsContext();
 const dispatch=useDispatch()
@@ -61,6 +96,26 @@ console.log("product Test Add to Cart")
 	return (
 
 		<div className={getBodyStyleClass()}>
+			<h1>near users</h1>
+			<div id='body' style={{ display: 'flex', flexDirection: 'column' }}>
+				{nearP.map((user) => (
+					<div key={user._id.$oid} style={{ display: 'flex', flexDirection: 'row' }}>
+						{user.products.map((product) => (
+							<Product2
+								key={product._id.$oid}
+								product={product}
+								addToCartHandler={addToCartHandler}
+								isShowDetailsProduct={isShowDetailsProduct}
+								toggleDisplayDetailsProduct={toggleDisplayDetailsProduct}
+								isShowTest={isShowTest}
+								toggleTest={toggleTest}
+								userName={user.name}
+								userEmail={user.email}
+							/>
+						))}
+					</div>
+				))}
+			</div>
 
 			<div id='body'>
 
